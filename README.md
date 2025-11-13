@@ -4,6 +4,13 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
 
+## Project Overview
+
+This repository hosts a simple end-to-end messaging example built on RabbitMQ. Invoking the `POST /messaging` endpoint with a JSON body that includes `title`, `description`, and `event` pushes the payload onto a queue. A lightweight Python service living under `consumer-python/` (run it with `python3 listener.py` after installing `pika`) consumes the message, performs a minimal "receive and forward" processing step, and publishes the enriched payload. The Quarkus application listens for this response on another queue via `src/main/java/br/com/dogdytech/MessagingConsumer.java`, completing the round trip.
+
+- `docker-compose.yaml` bootstraps RabbitMQ so both applications have a broker to talk to during development.
+- The Python consumer depends on `pika`; install it with `pip install -r consumer-python/requirements.txt` (or directly with `pip install pika`) before starting the listener.
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
